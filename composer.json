@@ -1,0 +1,33 @@
+{
+  "name": "osds/auth",
+  "description": "Easy Auth",
+  "authors": [
+    {
+      "name": "Open Source Development Services",
+      "email": "info@osds.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "version": "1.0a",
+  "require": {
+    "symfony/orm-pack": "^1.0",
+    "illuminate/http": "^5.6",
+    "doctrine/annotations": "~1.0",
+    "ramsey/uuid": "^3.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.1"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "Osds\\Auth\\": "src/"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "Osds\\Auth\\": "tests/"
+      }
+    }
+  }
+
+}
