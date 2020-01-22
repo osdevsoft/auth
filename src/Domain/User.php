@@ -2,14 +2,17 @@
 
 namespace Osds\Auth\Domain;
 
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Annotations\AnnotationReader;
+
+/**
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity
+ */
 class User
 {
-
-    const USERTYPE_VISITOR  = 1;
-    const USERTYPE_CLIENT   = 2;
-    const USERTYPE_ADMIN    = 3;
-    const USERTYPE_ROOT     = 4;
-
     /**
      * @var string
      *
@@ -42,7 +45,7 @@ class User
     /**
      * @var string|null
      *
-     * @ORM\Column(name="username", type="string", length=255, nullable=false)
+     * @ORM\Column(name="description", type="string", length=255, nullable=false)
      */
 	private $description;
 

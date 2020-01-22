@@ -1,6 +1,6 @@
 <?php
 
-namespace Osds\Auth;
+namespace Osds\Auth\Infrastructure\UI\StaticClass;
 
 use Osds\Auth\Application\User\AuthenticateUserApplication;
 use Osds\Auth\Application\User\CheckIfAuthenticatedApplication;

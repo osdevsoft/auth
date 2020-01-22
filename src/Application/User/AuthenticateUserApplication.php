@@ -2,6 +2,7 @@
 
 namespace Osds\Auth\Application\User;
 
+use Osds\Auth\Domain\User;
 use Osds\Auth\Infrastructure\Persistence\DoctrineRepository;
 
 class AuthenticateUserApplication
@@ -17,14 +18,13 @@ class AuthenticateUserApplication
     public function execute($email, $password)
     {
 
-        $user = $this->database->findBy('User', ['email' => $email]);
-        if($user != null && password_verify($password, $user->getPassword())) {
+        $user = $this->database->findBy(new User(), ['email' => $email]);
+        if ($user != null && password_verify($password, $user->getPassword())) {
             $user->setIsLogged(true);
             return $user;
         } else {
             return false;
         }
-
     }
 
 }
