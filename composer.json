@@ -8,7 +8,7 @@
     }
   ],
   "minimum-stability": "dev",
-  "version": "1.0a",
+  "version": "0.1",
   "require": {
     "symfony/orm-pack": "^1.0",
     "illuminate/http": "^5.6",
