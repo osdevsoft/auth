@@ -15,14 +15,14 @@ class AuthenticateServiceApplication
         $this->outputRequest = $outputRequest;
     }
 
-    public function execute($service, $username, $password)
+    public function execute($service, $email, $password)
     {
 
         $this->outputRequest->setQuery(
             'apiServiceAuth', 
             'post',
             ['post' =>
-                ['username' => $username,
+                ['email' => $email,
                  'password' => $password]
             ],
             [],
