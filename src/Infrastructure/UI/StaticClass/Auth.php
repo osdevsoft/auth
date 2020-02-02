@@ -2,35 +2,37 @@
 
 namespace Osds\Auth\Infrastructure\UI\StaticClass;
 
-use Osds\Auth\Application\User\AuthenticateUserApplication;
-use Osds\Auth\Application\User\CheckIfAuthenticatedApplication;
-use Osds\Auth\Infrastructure\Persistence\SessionRepository;
+use Osds\Auth\Application\Auth\CheckIfUserIsAuthenticatedApplication;
+use Osds\Auth\Application\Auth\AuthenticateServiceApplication;
+use Osds\DDDCommon\Domain\Auth\ValueObject\ServiceToken;
+use Osds\DDDCommon\Infrastructure\Persistence\SessionRepository;
 
 class Auth
 {
-
-	public static function authenticate($email, $password)
+    
+    public static function getServiceAuthToken($username, $password, $service = 'api')
 	{
-
-	    $checkApp = new CheckIfAuthenticatedApplication();
-	    $user = $checkApp->execute();
-
-        if($user != null) {
-            return 'already_logged';
+	    $userKey = md5($username);
+        $checkApp = new CheckIfUserIsAuthenticatedApplication();
+        $serviceToken = $checkApp->execute($service, $userKey);
+        if($serviceToken->get() != null) {
+            return $serviceToken->get();
         }
 
-	    $authApp = new AuthenticateUserApplication();
-	    $user = $authApp->execute($email, $password);
+        #not authenticated yet
+	    $authApp = new AuthenticateServiceApplication();
+	    $user = $authApp->execute($service, $username, $password);
 
-	    if($user != null) {
-
+	    if($user != null && isset($user['authToken'])) {
+            
             $session = new SessionRepository();
-            $session->put('user', $user);
+            $session->insert("{$service}_service_token_{$userKey}", $user['authToken']);
 
-            return 'login_ok';
+            return new ServiceToken($user['authToken']);
         }
 
-	    return 'login_ko';
+	    #TODO: die gracely
+	    die('no service auth found');
 
 	}
 
