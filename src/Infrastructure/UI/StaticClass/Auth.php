@@ -13,7 +13,6 @@ class Auth
 
     public static function getServiceAuthToken($authService, $username, $password, $service = 'api')
 	{
-	    #TODO: meh...
 	    $userKey = md5($username);
         $checkApp = new CheckIfUserIsAuthenticatedApplication();
         $serviceToken = $checkApp->execute($service, $userKey);
@@ -21,6 +20,7 @@ class Auth
             return $serviceToken->get();
         }
 
+	    #TODO: meh...
 	    $authService = str_replace('api/', '', $authService);
         #not authenticated yet. make request to get token
         $outputRequest = new OutputRequest(
