@@ -2,18 +2,17 @@
 
 namespace Osds\Auth\Application\Auth;
 
-use Osds\Auth\Domain\User;
-use Osds\Auth\Infrastructure\Persistence\DoctrineRepository;
 use Osds\DDDCommon\Infrastructure\Communication\OutputRequest;
+use Symfony\Component\Console\Output\Output;
 
 class AuthenticateServiceApplication
 {
 
     private $outputRequest;
 
-    public function __construct()
+    public function __construct(OutputRequest $outputRequest)
     {
-        $this->outputRequest = new OutputRequest('http://api.osdshub.sandbox/');
+        $this->outputRequest = $outputRequest;
     }
 
     public function execute($service, $username, $password)
@@ -23,8 +22,11 @@ class AuthenticateServiceApplication
             'apiServiceAuth', 
             'post',
             ['post' =>
-                ['username' => $username,  'password' => $password]
-            ]
+                ['username' => $username,
+                 'password' => $password]
+            ],
+            [],
+            false #no need for auth in this call
         );
         $result = $this->outputRequest->sendRequest();
         return $result;
