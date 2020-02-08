@@ -3,9 +3,8 @@
 namespace Osds\Auth\Application\Auth;
 
 use Osds\DDDCommon\Infrastructure\Persistence\SessionRepository;
-use Osds\DDDCommon\Domain\Auth\ValueObject\ServiceToken;
 
-class CheckIfUserIsAuthenticatedApplication
+class StoreServiceTokenApplication
 {
 
     private $session;
@@ -15,10 +14,9 @@ class CheckIfUserIsAuthenticatedApplication
         $this->session = $session;
     }
 
-    public function execute($service)
+    public function execute($service, $token)
     {
-        $user = $this->session->find("{$service}_user_token");
-        return $user;
+        $this->session->insert("{$service}_service_token", $token);
     }
 
 }

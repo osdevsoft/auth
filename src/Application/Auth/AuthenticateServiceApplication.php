@@ -2,41 +2,31 @@
 
 namespace Osds\Auth\Application\Auth;
 
-use Osds\DDDCommon\Infrastructure\Communication\OutputRequest;
-use Symfony\Component\Console\Output\Output;
+use GuzzleHttp\Client;
 
 class AuthenticateServiceApplication
 {
 
-    private $outputRequest;
-
-    public function __construct(OutputRequest $outputRequest)
+    public function __construct()
     {
-        $this->outputRequest = $outputRequest;
     }
 
-    public function execute($service, $email, $password)
+    public function execute($authServiceEndpoint, $email, $password, $originSite)
     {
-
-        $this->outputRequest->setQuery(
-            'apiServiceAuth', 
+        $client = new Client([
+            'base_uri' => $authServiceEndpoint
+        ]);
+        $response = $client->request(
             'post',
-            ['post' =>
-                ['email' => $email,
-                 'password' => $password]
-            ],
-            [],
-            false #no need for auth in this call
+            '/apiServiceAuth?originSite=' . $originSite,
+            ['form_params' => [
+                'email' => $email,
+                'password' => $password
+                ]
+            ]
         );
-        $result = $this->outputRequest->sendRequest();
-        return $result;
-//        $user = $this->database->findBy(new User(), ['email' => $email]);
-//        if ($user != null && password_verify($password, $user->getPassword())) {
-//            $user->setIsLogged(true);
-//            return $user;
-//        } else {
-//            return false;
-//        }
+        $data = json_decode($response->getBody(), true);
+        return $data;
     }
 
 }

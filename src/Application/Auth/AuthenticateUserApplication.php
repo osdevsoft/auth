@@ -25,7 +25,7 @@ class AuthenticateUserApplication
                 ['search_fields[email]' => $email]
             ]
         );
-        $response = $this->outputRequest->sendRequest();
+        $response = $this->outputRequest->sendRequest($service);
         if($response !== null
             && isset($response['total_items'])
             && $response['total_items'] == 1

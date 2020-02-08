@@ -3,9 +3,8 @@
 namespace Osds\Auth\Application\Auth;
 
 use Osds\DDDCommon\Infrastructure\Persistence\SessionRepository;
-use Osds\DDDCommon\Domain\Auth\ValueObject\ServiceToken;
 
-class CheckIfServiceIsAuthenticatedApplication
+class DeleteServiceTokenApplication
 {
 
     private $session;
@@ -17,8 +16,7 @@ class CheckIfServiceIsAuthenticatedApplication
 
     public function execute($service)
     {
-        $serviceToken = $this->session->find("{$service}_service_token");
-        return new ServiceToken($serviceToken);
+        $this->session->delete("{$service}_service_token");
     }
 
 }
