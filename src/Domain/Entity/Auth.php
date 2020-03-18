@@ -13,11 +13,18 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Auth
 {
+
+    /**
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="binary", unique=true)
+     */
+    protected $id;
+
     /**
      * @var string
      *
-     * @ORM\Column(name="uuid", type="string", length=255, nullable=false)
-     * @ORM\Id
+     * @ORM\Column(name="uuid", type="string", length=40, nullable=false)
      */
     protected $uuid;
 
@@ -52,14 +59,7 @@ class Auth
     /**
      * @var integer|null
      *
-     * @ORM\Column(name="role_mask", type="integer", length=10, nullable=false)
-     */
-    protected $role_mask;
-
-    /**
-     * @var integer|null
-     *
-     * @ORM\Column(name="status", type="integer", length=255, nullable=false)
+     * @ORM\Column(name="status", type="integer", length=255, options={"default"=1})
      */
     protected $status;
 
@@ -93,9 +93,8 @@ class Auth
 
     public function __construct()
     {
-        $this->static_pages = new ArrayCollection();
-        $this->created_at = date('Y-m-d H:i:s');
-        $this->updated_at = date('Y-m-d H:i:s');
+        $this->created_at = new \DateTime('now');
+        $this->updated_at = new \DateTime('now');
     }
 
     /**
@@ -108,6 +107,16 @@ class Auth
         if ($this->created_at == null) {
             $this->updated_at = new \DateTime('now');
         }
+    }
+
+    public function setId($uuid)
+    {
+        $this->id = pack("H*", str_replace('-', '', $uuid));
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -124,6 +133,7 @@ class Auth
     public function setUuid($uuid)
     {
         $this->uuid = $uuid;
+        $this->setId($uuid);
     }
 
     /**
@@ -188,22 +198,6 @@ class Auth
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRoleMask()
-    {
-        return $this->role_mask;
-    }
-
-    /**
-     * @param mixed $role_mask
-     */
-    public function setRoleMask($role_mask)
-    {
-        $this->role_mask = $role_mask;
     }
 
     /**
