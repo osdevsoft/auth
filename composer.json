@@ -7,7 +7,7 @@
       "email": "info@osds.com"
     }
   ],
-  "version": "1.0.1",
+  "version": "1.0.2",
   "require": {
     "doctrine/annotations": "^1.8",
     "firebase/php-jwt" : "^5.0"
